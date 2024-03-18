@@ -1,17 +1,14 @@
 name: 'Lint PR'
 
 on:
-  pull_request:
-    branches:
-      - main
+  pull_request_target:
     types:
       - opened
       - edited
       - synchronize
-      - reopened
 
 permissions:
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   main:
@@ -30,7 +27,9 @@ jobs:
         with:
           header: pr-title-lint-error
           message: |
-            PR 제목은 [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/)을 따라야 합니다. 아래의 에러 메시지를 참고하여 PR 제목을 수정해주세요.
+            Hey there and thank you for opening this pull request! 👋🏼
+
+            We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
 
             Details:
 
