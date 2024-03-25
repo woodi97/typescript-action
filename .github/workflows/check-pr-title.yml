@@ -39,7 +39,7 @@ jobs:
           scopes: |
             core
             ui
-            JIRA-\d+
+            [JIRA-\d+]
 
       - uses: marocchino/sticky-pull-request-comment@v2
         # When the previous steps fails, the workflow would stop. By adding this
