@@ -48,6 +48,10 @@ jobs:
             - chore: 빌드 프로세스 업데이트, 패키지 매니저 설정 변경 등
             - revert: 이전 커밋 되돌리기
 
+            Details:
+            
+            ```
+            ${{ steps.lint_pr_title.outputs.error_message }}
             ```
 
       # Delete a previous comment when the issue has been resolved
