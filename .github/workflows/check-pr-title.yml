@@ -23,9 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          headerPattern:
-            '^(\[META-\d+])(?:\((feat|fix|docs|style|refactor|perf|test|chore|build|ci|temp|revert)\))?:
-            (.*)$'
+          headerPattern: '^(\[META-\d+])(?:\((feat|fix|docs|style|refactor|perf|test|chore|build|ci|temp|revert)\))?:(.*)$'
           headerPatternCorrespondence: type, scope, subject
 
       - uses: marocchino/sticky-pull-request-comment@v2
