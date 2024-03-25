@@ -18,12 +18,12 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v4
         id: lint_pr_title
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          headerPattern: '^(\[META-\d+\]) ((?:feat|fix|docs|style|refactor|perf|test|chore|build|ci|temp|revert)):(.*)$'
+          headerPattern: '^(\[META-\d+\]) ((?:feat|fix|docs|style|refactor|perf|test|chore|revert)):(.*)$'
           headerPatternCorrespondence: scope, type, subject
 
       - uses: marocchino/sticky-pull-request-comment@v2
@@ -33,12 +33,21 @@ jobs:
         with:
           header: pr-title-lint-error
           message: |
-            PR 제목은 [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/)을 따라야 합니다. 아래의 에러 메시지를 참고하여 PR 제목을 수정해주세요.
+            PR 제목은 다음과 같은 형식으로 작성해주세요.
 
-            Details:
+            [META-TicketNumber] type: subject
 
-            ```
-            ${{ steps.lint_pr_title.outputs.error_message }}
+            type은 다음 중 하나여야 합니다.([Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/)을 따르고 있습니다)
+            - feat: 새로운 기능 추가
+            - fix: 버그 수정
+            - docs: 문서 수정
+            - style: 코드 포맷팅, 세미콜론 누락 등 코드 변경이 없는 경우
+            - refactor: 코드 리팩토링
+            - perf: 성능 향상을 위한 코드 변경
+            - test: 테스트 코드 추가, 수정
+            - chore: 빌드 프로세스 업데이트, 패키지 매니저 설정 변경 등
+            - revert: 이전 커밋 되돌리기
+
             ```
 
       # Delete a previous comment when the issue has been resolved
