@@ -35,6 +35,7 @@ jobs:
             ci
             chore
             revert
+          requireScope: true
           scopes: |
             core
             ui
