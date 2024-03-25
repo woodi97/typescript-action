@@ -26,6 +26,10 @@ jobs:
           headerPattern: '^(\[META-\d+\]) ((?:feat|fix|docs|style|refactor|perf|test|chore|revert)):(.*)$'
           headerPatternCorrespondence: scope, type, subject
 
+      - name: Build Frontend
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }}
+
       - uses: marocchino/sticky-pull-request-comment@v2
         # When the previous steps fails, the workflow would stop. By adding this
         # condition you can continue the execution with the populated error message.
@@ -33,6 +37,7 @@ jobs:
         with:
           header: pr-title-lint-error
           message: |
+            // echo GITHUB_TOKEN:
             PR 제목은 다음과 같은 형식으로 작성해주세요.
 
             [META-TicketNumber] type: subject
