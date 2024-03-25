@@ -23,10 +23,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          types: |
-            fix
-            feat
-            poc
+          headerPattern: '^(\[META-\d+\]) ((?:feat|fix|docs|style|refactor|perf|test|chore|build|ci|temp|revert)):(.*)$'
+          headerPatternCorrespondence: scope, type, subject
 
       - uses: marocchino/sticky-pull-request-comment@v2
         # When the previous steps fails, the workflow would stop. By adding this
