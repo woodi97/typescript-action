@@ -1,10 +1,13 @@
 name: 'Label Checker'
 
+# labels changed
 on:
   pull_request:
     branches:
       - '**'
     types:
+      - labeled
+      - unlabeled
       - opened
       - edited
       - synchronize
