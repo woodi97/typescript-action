@@ -1,0 +1,63 @@
+name: 'Lint PR'
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  pull-requests: write
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v4
+        id: lint_pr_title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          headerPattern: '^(\[META-\d+\]) ((?:feat|fix|docs|style|refactor|perf|test|chore|revert)):(.*)$'
+          headerPatternCorrespondence: scope, type, subject
+
+      - name: Build Frontend
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        # When the previous steps fails, the workflow would stop. By adding this
+        # condition you can continue the execution with the populated error message.
+        if: always() && (steps.lint_pr_title.outputs.error_message != null)
+        with:
+          header: pr-title-lint-error
+          message: |
+            // echo GITHUB_TOKEN:
+            PR 제목은 다음과 같은 형식으로 작성해주세요.
+
+            [META-TicketNumber] type: subject
+
+            type은 다음 중 하나여야 합니다.([Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/)을 따르고 있습니다)
+            - feat: 새로운 기능 추가
+            - fix: 버그 수정
+            - docs: 문서 수정
+            - style: 코드 포맷팅, 세미콜론 누락 등 코드 변경이 없는 경우
+            - refactor: 코드 리팩토링
+            - perf: 성능 향상을 위한 코드 변경
+            - test: 테스트 코드 추가, 수정
+            - chore: 빌드 프로세스 업데이트, 패키지 매니저 설정 변경 등
+            - revert: 이전 커밋 되돌리기
+
+            subject는 PR의 내용을 간략하게 설명해주세요.
+
+      # Delete a previous comment when the issue has been resolved
+      - if: ${{ steps.lint_pr_title.outputs.error_message == null }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-title-lint-error
+          delete: true
