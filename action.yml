@@ -1,5 +1,5 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
+name: 'Review Lotto'
+description: 'Select random reviewers for your pull request.'
 author: 'woodi97'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
@@ -9,10 +9,18 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
+  github-token:
     description: 'Your input description here'
     required: true
-    default: '1000'
+  slack-token:
+    description: 'Your input description here'
+    required: true
+  slack-conversation-id:
+    description: 'Your input description here'
+    required: true
+  reviewers:
+    description: 'Your input description here'
+    required: true
 
 # Define your outputs here.
 outputs:
