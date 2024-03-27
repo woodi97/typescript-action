@@ -14,23 +14,29 @@ on:
       - reopened
 
 jobs:
-  check-bug:
+  check-label-exist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Should have labels
+      if: >
+        length(github.event.pull_request.labels) == 0
+      run: exit 1
+  block-merge:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Labels not added (bug)
       if: >
-        contains(github.event.pull_request.labels.*.name, 'bug') == false
+        contains(github.event.pull_request.labels.*.name, 'invalid') == true
       run: exit 1
-
-  check-sev:
+  check-qa:
     runs-on: ubuntu-latest
     needs: check-bug
     steps:
     - uses: actions/checkout@v3
     - name: Labels not added (sev1, sev2, sev3)
       if: >
-        contains(github.event.pull_request.labels.*.name, 'sev1') == false && 
-        contains(github.event.pull_request.labels.*.name, 'sev2') == false && 
-        contains(github.event.pull_request.labels.*.name, 'sev3') == false
+        contains(github.event.pull_request.labels.*.name, 'bug') == true && 
+        contains(github.event.pull_request.labels.*.name, 'duplicate') == false
       run: exit 1
