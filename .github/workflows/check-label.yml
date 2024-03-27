@@ -13,6 +13,9 @@ on:
       - synchronize
       - reopened
 
+permissions:
+  pull-requests: write
+
 jobs:
   check-label:
     runs-on: ubuntu-latest
