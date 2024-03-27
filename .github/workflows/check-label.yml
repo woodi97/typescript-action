@@ -22,19 +22,11 @@ jobs:
       if: >
         github.event.pull_request.labels[0] == null
       run: exit 1
-  block-merge:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Labels not added (bug)
+    - name: Invalid label added
       if: >
         contains(github.event.pull_request.labels.*.name, 'invalid') == true
       run: exit 1
-  check-qa:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Labels not added (sev1, sev2, sev3)
+    - name: Check QA label
       if: >
         contains(github.event.pull_request.labels.*.name, 'bug') == true && 
         contains(github.event.pull_request.labels.*.name, 'duplicate') == false
