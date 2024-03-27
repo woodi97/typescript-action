@@ -18,6 +18,14 @@ permissions:
   checks: write
 
 jobs:
+  PASS:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: danielchabr/pr-labels-checker@v3.3
+        id: checkLabel
+        with:
+          hasAll: documentation
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
   DoNotMerge:
     runs-on: ubuntu-latest
     steps:
