@@ -32,7 +32,6 @@ jobs:
       run: exit 1
   check-qa:
     runs-on: ubuntu-latest
-    needs: check-bug
     steps:
     - uses: actions/checkout@v3
     - name: Labels not added (sev1, sev2, sev3)
