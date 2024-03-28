@@ -22,8 +22,6 @@ jobs:
     steps:
     - name: Lint PR Label
       id: check_label
-      if: >
-        github.event.pull_request.labels[0] == null
       uses: actions/checkout@v3
       with:
         script: |
