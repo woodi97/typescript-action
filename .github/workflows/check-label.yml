@@ -57,7 +57,7 @@ jobs:
       with:
         header: label-lint-error
         message: |
-          에러: ${{ steps.check_label.outputs.error_message }}}
+          ${{ steps.check_label.outputs.error_message }}}
 
           Label Tag는 다음과 같은 정책을 가지고 있습니다.
 
