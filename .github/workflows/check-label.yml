@@ -67,7 +67,7 @@ jobs:
           - 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.
 
       # Delete a previous comment when the issue has been resolved
-    - if: ${{ steps.check_abel.outputs.error_message == null }}
+    - if: ${{ steps.check_label.outputs.error_message == null }}
       uses: marocchino/sticky-pull-request-comment@v2
       with:
         header: label-lint-error
