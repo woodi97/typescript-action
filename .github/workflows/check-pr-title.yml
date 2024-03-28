@@ -25,11 +25,6 @@ jobs:
         with:
           headerPattern: '^(\[META-\d+\]) ((?:feat|fix|docs|style|refactor|perf|test|chore|revert)):(.*)$'
           headerPatternCorrespondence: scope, type, subject
-
-      - name: Build Frontend
-        run: |
-          echo ${{ secrets.GITHUB_TOKEN }}
-
       - uses: marocchino/sticky-pull-request-comment@v2
         # When the previous steps fails, the workflow would stop. By adding this
         # condition you can continue the execution with the populated error message.

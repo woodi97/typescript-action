@@ -44,5 +44,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: 'Label Tag는 다음과 같은 정책을 가지고 있습니다. - 최소한 하나의 Label이 있어야 합니다. - invalid Label이 있을 경우 PR을 Merge할 수 없습니다. - bug Label이 있을 경우 PR을 Merge할 수 없습니다. - 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.'
+            body: 'Label Tag는 다음과 같은 정책을 가지고 있습니다. \n- 최소한 하나의 Label이 있어야 합니다. \n- invalid Label이 있을 경우 PR을 Merge할 수 없습니다. - bug Label이 있을 경우 PR을 Merge할 수 없습니다. - 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.'
           })
