@@ -20,21 +20,25 @@ jobs:
   check-label:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: Lint PR Label
       id: check_label
-      uses: actions/checkout@v3
+      uses: actions/github-script@v6
       with:
         script: |
           if (github.event.pull_request.labels[0] == null) {
-            core.setFailed("error_message", "최소 한 개의 Label이 있어야 합니다.")
+            core.setOutput("error_message", "최소 한 개의 Label이 있어야 합니다.")
+            throw new Error("최소 한 개의 Label이 있어야 합니다.")
           }
 
           if(contains(github.event.pull_request.labels.*.name, 'invalid') == true) {
             core.setFailed("error_message", "invalid Label이 있을 경우 PR을 Merge할 수 없습니다.")
+            throw new Error("invalid Label이 있을 경우 PR을 Merge할 수 없습니다.")
           }
 
           if(contains(github.event.pull_request.labels.*.name, 'bug') == true && contains(github.event.pull_request.labels.*.name, 'duplicate') == false) {
             core.setFailed("error_message", "bug Label이 있을 경우 PR을 Merge할 수 없습니다. 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.")
+            throw new Error("bug Label이 있을 경우 PR을 Merge할 수 없습니다. 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.")
           }
     - name: catch error and show label rule
       uses: marocchino/sticky-pull-request-comment@v2
