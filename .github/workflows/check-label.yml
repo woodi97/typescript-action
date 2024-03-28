@@ -20,29 +20,50 @@ jobs:
   check-label:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
     - name: Should have labels
+      id: check_label
       if: >
         github.event.pull_request.labels[0] == null
-      run: exit 1
+      uses: actions/checkout@v3
+      with:
+        script: |
+          core.setFailed("error_message", "최소 한 개의 Label이 있어야 합니다.")
     - name: Invalid label added
+      id: check_label
       if: >
         contains(github.event.pull_request.labels.*.name, 'invalid') == true
-      run: exit 1
+      uses: actions/github-script@v3
+      with:
+        script: |
+          core.setFailed("error_message", "invalid Label이 있을 경우 PR을 Merge할 수 없습니다.")
     - name: Check QA label
+      id: check_label
       if: >
         contains(github.event.pull_request.labels.*.name, 'bug') == true && 
         contains(github.event.pull_request.labels.*.name, 'duplicate') == false
-      run: exit 1
-    - name: catch error and show label rule
-      if: failure()
-      uses: actions/github-script@v6
+      uses: actions/github-script@v3
       with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: 'Label Tag는 다음과 같은 정책을 가지고 있습니다. \n- 최소한 하나의 Label이 있어야 합니다. \n- invalid Label이 있을 경우 PR을 Merge할 수 없습니다. - bug Label이 있을 경우 PR을 Merge할 수 없습니다. - 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.'
-          })
+          core.setFailed("error_message", "bug Label이 있을 경우 PR을 Merge할 수 없습니다. 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.")
+    - name: catch error and show label rule
+      id: check_label
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: always() && (steps.lint_pr_title.outputs.error_message != null)
+      with:
+        header: label-lint-error
+        message: |
+          에러: ${{ steps.check_label.outputs.error_message }}}
+
+          Label Tag는 다음과 같은 정책을 가지고 있습니다.
+
+          - 최소한 하나의 Label이 있어야 합니다.
+          - invalid Label이 있을 경우 PR을 Merge할 수 없습니다.
+          - bug Label이 있을 경우 PR을 Merge할 수 없습니다.
+          - 단, duplicate Label이 함께 있을 경우 Merge 가능합니다.
+
+      # Delete a previous comment when the issue has been resolved
+    - if: ${{ steps.check_abel.outputs.error_message == null }}
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        header: label-lint-error
+        delete: true
